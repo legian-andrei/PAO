@@ -1,0 +1,35 @@
+1. d) nu poate fi suprascrisă, dar poate fi supraîncărcată
+O metoda final nu poate fi suprascrisa pentru ca asta ar modifica comportamentul sau in clasa derivata;
+O metoda final poate fi supraincarcata, aceasta neafectand metoda final originala, ci doar metodele cu acelasi nume, dar cu parametri diferiti
+
+2. b) 10 cifre egale cu 1, 10 cifre egale cu 2 și o cifră egală cu 3, dar toate cifrele egale cu 2 se vor afla înaintea cifrei 3
+10 cifre egale cu 1 (avem un thread t1 cu atributul x = 1, iar in metoda run se afiseaza de 10 ori acest atribut)
+10 cifre egale cu 2 (avem un thread t2 cu atributul x = 2, iar in metoda run se afiseaza de 10 ori acest atribut)
+o cifră egală cu 3 (la final, in main, se afiseaza 3)
+toate cifrele egale cu 2 se vor afla înaintea cifrei 3 (inaintea afisarii lui 3 se face join() pe t2, ceea ce face programul sa astepte terminarea threadului t2 inainte sa continue executia in main)
+
+3. c)
+a) Thread t = new Thread(new C()); t.run();
+F: run() apeleaza pe firul curent; start() deschide un nou thread
+b) Thread t = new Thread(C); t.start();
+F: constructorul Thread asteapta un obiect Runnable, nu clasa C insasi
+c) C r = new C(); Thread t = new Thread(r); t.start();
+A: se creeaza obiect C(implementeaza Runnable), se creeaza fir Thread cu un argument de tip C, threadul nou este pornit cu start() care va apela run()
+d) C r = new C(); t.start();
+F: t nu este definit
+
+4. a) numărul aparițiilor literei e în șirul s
+s.length() -> lungimea lui s
+s.replace(c, "") -> s fara c(litera e)
+s.replace(c, "").length() -> lungimea lui s fara c(litera e)
+s.length() - s.replace(c, "").length() -> numarul de c(litera e) din s-ul initial
+
+5. b), d)
+a) o clasă abstractă poate fi instanțiată
+F: o clasa abstracta e destinata sa fie mostenita de alte clase ce contin implementari concrete ale metodelor abstracte
+b) o clasă abstractă poate să aibă constructori
+A: constructorii sunt utilizati de subclase pentru a initializa starea obiectului
+c) o clasă abstractă nu poate fi extinsă de o altă clasă abstractă
+F: 
+d) o clasă abstractă poate să implementeze o interfață
+A: o clasa abstracta poate implementa 1/mai multe interfete; subclasele concrete trebuie sa implementeze interfetele complet
