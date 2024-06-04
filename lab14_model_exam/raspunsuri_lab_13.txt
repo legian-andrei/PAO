@@ -1,0 +1,105 @@
+Task 1:
+1
+5
+Explicatie: Atat clasa A, cat si clasa B contin o variabila statica a. Variabila a(din main) este o referinta de tip A, avand tipul real B. Variabilele statice sunt rezolvate in functie de tipul declarat al referintei, nu de tipul real, deci in urma instructiunii a.a++ se va mari a-ul static din clasa A. Se afiseaza variabila statica din A(1) si variabila statica din B(5)
+
+Task 2:
+C
+D 1
+E
+Explicatie: Constructorul E apeleaza constructorul parametrizat al superclasei (D(1)); Constructorul D(1) apeleaza default constructorul neparametrizat al superclasei C; Constructorul C afiseaza "C", dupa care se intoarce in constructorul parametrizat D(1) care afiseaza "D 1", care in final se intoarce in constructorul E si afiseaza "E"
+
+Task 3:
+2
+3
+Explicatie: Se instantiaza un obiect de tip F numit f, avand ca atribut a=0; bar(f) modifica a-ul variabilei trimisa ca parametru prima data in 1 in try, apoi in 2 in finally; se afiseaza a-ul din f-ul declarat (2); se afiseaza valoarea returnata de foo(): try-ul incearca sa returneze 0, dar finally se executa intotdeauna si inlocuieste val returnata din try cu 3 -> se afiseaza 3
+
+Task 4:
+la fel ca la Task 3;
+
+Task 5:
+import java.util.List;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+
+class Bilant implements Comparable<Bilant>{
+    private int pos;
+    private  int neg;
+
+    public Bilant(int pos, int neg) {
+        this.pos = pos;
+        this.neg = neg;
+    }
+
+    public Bilant(){
+        this(0,0);
+    }
+
+    public String toString(){
+        return "Bilant: pos = " + pos + "; neg = " + neg + ";";
+    }
+    
+    @Override
+    public int compareTo(Bilant b){
+        if (this.pos-b.pos!=0){
+            return -(this.pos-b.pos);
+        } else {
+            return -(this.neg-b.neg);
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        List<Bilant> l = new ArrayList<>();
+        l.add(new Bilant(10, 5));
+        l.add(new Bilant(10, -1));
+        l.add(new Bilant());
+
+        List<Bilant> sl = l.stream().sorted().collect(Collectors.toList());
+        sl.forEach(System.out::println);
+    }
+}
+
+Task 6:
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+class LineChrCounter implements Runnable{
+    private final String line;
+    private final char targetChar;
+
+    public LineChrCounter(String line, char chr){
+        this.line = line;
+        targetChar = chr;
+    }
+
+    @Override
+    public void run(){
+        int cnt = 0;
+        for(char c: line.toCharArray()){
+            if (c == targetChar){
+                cnt++;
+            }
+        }
+        System.out.println(line + " -> " + cnt);
+    }
+}
+
+public class CharacterCounter  {
+    public static void main(String[] args) {
+        String fPath = args[0];
+        char target = args[1].charAt(0);
+        try (BufferedReader fin = new BufferedReader(new FileReader(fPath))){
+            String line = fin.readLine();
+            while (line != null){
+                Thread thr = new Thread(new LineChrCounter(line, target));
+                thr.start();;
+                line = fin.readLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
